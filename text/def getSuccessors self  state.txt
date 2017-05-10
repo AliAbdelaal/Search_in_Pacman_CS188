@@ -1,0 +1,40 @@
+    def getSuccessors(self, state):
+        """
+        Returns successor states, the actions they require, and a cost of 1.
+
+         As noted in search.py:
+            For a given state, this should return a list of triples, (successor,
+            action, stepCost), where 'successor' is a successor to the current
+            state, 'action' is the action required to get there, and 'stepCost'
+            is the incremental cost of expanding to that successor
+        """
+
+        successors = []
+        for corner in state[1]:
+            directions = []
+            start = state[0][0]
+            problem = PositionSearchProblem(gameState=self.gameState,goal=corner, start=start)
+            for direction in search.breadthFirstSearch(problem=problem):
+                directions.append(direction)
+            remainingCorners =[]
+            for remain_corner in state[1]:
+                if remain_corner == corner:
+                    continue
+                remainingCorners.append(remain_corner)
+            newState = [[corner], remainingCorners]
+            successors.append([newState, directions, 1])
+        
+        self._expanded += 1 # DO NOT CHANGE
+        return successors
+    def isGoalState(self, state):
+        """
+        Returns whether this search state is a goal state of the problem.
+        """
+        "*** YOUR CODE HERE ***"
+        # print "checking now:",state[2]
+        # input("check ?")
+        for corner in self.corners:
+            if corner in state[1]:
+                return False
+        # input("found solution !!!!!!!")
+        return True
